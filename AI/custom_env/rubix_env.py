@@ -1,5 +1,4 @@
 import sys
-from threading import Thread
 import numpy
 
 sys.path.insert(0, "/Users/xavierh/Rubix Cube Solve Fully/Game")
