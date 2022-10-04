@@ -9,7 +9,7 @@ from gym.spaces import Discrete, Box
 import numpy as np
 
 IDEAL_NUMBER_OF_MOVES = 20
-DELAY = .1
+DELAY = .005
 MAX_MOVES_TO_TIMEOUT = 40
 
 class RubixEnv(Env):
@@ -48,16 +48,14 @@ class RubixEnv(Env):
             self.game.model.rotateBackClockwise(None)
 
         if self.game.model.hasWon():
-            self.reward = 1
+            self.reward = 100
             self.done = True
         elif self.game.model.number_of_moves == MAX_MOVES_TO_TIMEOUT:
             self.reward = numpy.NINF
             self.done = True
         else: 
             # should punish severely for taking too long
-            self.reward = 1 - 2 ** (
-                self.game.model.number_of_moves - IDEAL_NUMBER_OF_MOVES
-            )
+            self.reward = -self.getSubstringCount()
 
         self.observation = self.get_observation()
         
@@ -88,3 +86,12 @@ class RubixEnv(Env):
 
         return np.array(side_vector, dtype=np.float32)
         
+    def getSubstringCount(self):
+        """lower the substrings the better 7 means cube is solved"""
+        substrings = 0
+        past_ele = -1
+        for ele in self.observation:
+            if past_ele != ele:
+                substrings += 1
+                past_ele = ele
+        return substrings

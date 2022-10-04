@@ -7,17 +7,17 @@ models_dir = f"models/{int(time.time())}/"
 logdir = f"logs/{int(time.time())}/"
 
 if not os.path.exists(models_dir):
-	os.makedirs(models_dir)
+    os.makedirs(models_dir)
 
 if not os.path.exists(logdir):
-	os.makedirs(logdir)
+    os.makedirs(logdir)
 
 env = RubixEnv()
 env.reset(0)
 
 model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=logdir)
 
-TIMESTEPS = 10
+TIMESTEPS = 1000
 iters = 0
 while True:
     iters += 1
@@ -25,4 +25,3 @@ while True:
     model.save(f"{models_dir}/{TIMESTEPS*iters}")
     print("resetting env")
     env.reset(iters)
-    
