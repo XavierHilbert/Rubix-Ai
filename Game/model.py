@@ -25,9 +25,10 @@ class Model:
         Check if has won, if so display.
         call update on visualizer."""
         self.number_of_moves += 1
-        self.visualizer.render(
-            cube=self.cube, hasWon=self.hasWon(), number_of_moves=self.number_of_moves
-        )
+        if self.visualizer is not None:
+            self.visualizer.render(
+                cube=self.cube, hasWon=self.hasWon(), number_of_moves=self.number_of_moves
+            )
 
     def firstRender(self, delay):
         """Update the game. Should be called on all changes.

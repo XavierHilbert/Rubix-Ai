@@ -10,7 +10,7 @@ from Color.color import Color
 class runCubeGame:
     """Create a new cube env."""
 
-    def __init__(self, number_of_times_randomize=1) -> None:
+    def __init__(self, number_of_times_randomize=1, visualize = True , delay = 0) -> None:
         red = Side3x3(
             [Color(Colors_Enum.RED), Color(Colors_Enum.RED), Color(Colors_Enum.RED)],
             [Color(Colors_Enum.RED), Color(Colors_Enum.RED), Color(Colors_Enum.RED)],
@@ -97,14 +97,15 @@ class runCubeGame:
 
         c = Cube(front=red, left=blue, right=green, up=yellow, down=white, back=orange)
 
-        self.visualizer = Visualizer()
+        if visualize: 
+            self.visualizer = Visualizer()
+        else:
+            self.visualizer = None
         self.model = Model(
             visualizer=self.visualizer,
             cube=c,
             number_of_times_randomize=number_of_times_randomize,
-        )
-        self.controller = Controller(model=self.model, visualizer=self.visualizer)
-
-    def start(self, delay=0):
-        """Start the game."""
-        self.model.firstRender(delay)
+        )   
+        if visualize:
+            self.controller = Controller(model=self.model, visualizer=self.visualizer)
+            self.model.firstRender(delay)

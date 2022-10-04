@@ -8,8 +8,8 @@ from gym.spaces import Discrete, Box
 import numpy as np
 
 IDEAL_NUMBER_OF_MOVES = 20
-DELAY = .005
-MAX_MOVES_TO_TIMEOUT = 40
+DELAY = .0000005
+MAX_MOVES_TO_TIMEOUT = 30
 
 class RubixEnv(Env):
     def __init__(self) -> None:
@@ -20,7 +20,7 @@ class RubixEnv(Env):
 
     def step(self, action):
         """Returns observation, reward, done, info"""
-        self.game.start(DELAY)
+        #self.game.start(DELAY) for viszualization
         if action == 0:
             self.game.model.rotateLeftCounterClockwise(None)
         elif action == 1:
@@ -50,11 +50,11 @@ class RubixEnv(Env):
             self.reward = 100
             self.done = True
         elif self.game.model.number_of_moves == MAX_MOVES_TO_TIMEOUT:
-            self.reward = numpy.NINF
+            self.reward = (-self.getSubstringCount() - self.game.model.number_of_moves)*2
             self.done = True
         else: 
             # should punish severely for taking too long
-            self.reward = -self.getSubstringCount()
+            self.reward = -self.getSubstringCount() - self.game.model.number_of_moves
 
         self.observation = self.get_observation()
         
@@ -63,7 +63,7 @@ class RubixEnv(Env):
 
     def reset(self, randomize_amount: int = 0):
         self.done = False
-        self.game = runCubeGame(randomize_amount)
+        self.game = runCubeGame(randomize_amount, False)
         
         # want to know left, right, up, down, front, back
         self.observation = self.get_observation()
