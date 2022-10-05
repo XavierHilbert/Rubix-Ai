@@ -5,16 +5,16 @@ from custom_env.rubix_env import RubixEnv
 models_dir = "models/1664937107"
 
 env = RubixEnv()
-env.reset(10, True)
+env.reset(1, True)
 
-model_path = f"{models_dir}/4500000"
+model_path = f"{models_dir}/4400000"
 model = PPO.load(model_path, env=env)
 
 episodes = 5
 
 rewards = 0
 for ep in range(episodes):
-    obs = env.reset(10, True)
+    obs = env.reset(1, True)
     done = False
     print(rewards)
     while not done:
