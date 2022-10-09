@@ -1,0 +1,5 @@
+Run main.py to play rubix cube game manually. 
+
+AI contains content to train ai to solve rubix cube, and models contains its output.
+Still working on AI portion. Currently looking into monte carlo search trees to have 
+a better ai. 

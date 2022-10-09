@@ -1,16 +1,16 @@
 import gym
-from stable_baselines3 import PPO
+from stable_baselines3 import DQN
 from custom_env.rubix_env import RubixEnv
 
-models_dir = "models/1664937107"
+models_dir = "models/DQN21664946283"
 
 env = RubixEnv()
 env.reset(1, True)
 
-model_path = f"{models_dir}/4400000"
-model = PPO.load(model_path, env=env)
+model_path = f"{models_dir}/10000000"
+model = DQN.load(model_path, env=env)
 
-episodes = 1
+episodes = 10
 
 rewards = 0
 for ep in range(episodes):

@@ -11,7 +11,16 @@ IDEAL_NUMBER_OF_MOVES = 20
 DELAY = .5
 MAX_MOVES_TO_TIMEOUT = 30
 
-class RubixEnv(Env):
+DESIRED_GOAL = [
+    2, 2, 2, 2, 2, 2, 2, 2, 2,
+    1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    3, 3, 3, 3, 3, 3, 3, 3, 3,
+    4, 4, 4, 4, 4, 4, 4, 4, 4,
+    5, 5, 5, 5, 5, 5, 5, 5, 5
+]
+
+class RubixEnv(GoalEnv):
     def __init__(self) -> None:
         super(RubixEnv, self).__init__()
         self.action_space = Discrete(12)
@@ -93,3 +102,7 @@ class RubixEnv(Env):
                 substrings += 1
                 past_ele = ele
         return substrings
+    
+    def compute_reward(self, achieved_goal: object, desired_goal: object, info) -> float:
+        """Returns the reward for the current state."""
+        return super().compute_reward(self.get_observation(), desired_goal=DESIRED_GOAL, info={})
