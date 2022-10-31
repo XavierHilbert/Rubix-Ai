@@ -3,13 +3,13 @@ import numpy
 
 sys.path.insert(0, "/Users/xavierh/Rubix Cube Solve Fully/Game")
 from runCubeGame import runCubeGame
-from gym import Env, GoalEnv
+from gym import Env
 from gym.spaces import Discrete, Box
 import numpy as np
 
 IDEAL_NUMBER_OF_MOVES = 20
 DELAY = .5
-MAX_MOVES_TO_TIMEOUT = 30
+MAX_MOVES_TO_TIMEOUT = 10
 
 class RubixEnv(Env):
     def __init__(self) -> None:
@@ -60,9 +60,9 @@ class RubixEnv(Env):
         info = {}
         return self.observation, self.reward, self.done, info
 
-    def reset(self, number_of_times_randomize: int = 0, visualize: bool = False):
+    def reset(self, number_of_times_randomize: int = 1):
         self.done = False
-        self.game = runCubeGame(number_of_times_randomize = number_of_times_randomize, visualize=visualize, delay=DELAY)
+        self.game = runCubeGame(number_of_times_randomize = number_of_times_randomize, delay=DELAY)
         
         # want to know left, right, up, down, front, back
         self.observation = self.get_observation()
@@ -93,3 +93,9 @@ class RubixEnv(Env):
                 substrings += 1
                 past_ele = ele
         return substrings
+
+    def render(self, mode='human'):
+        self.game.model.firstRender(.01)
+    
+    def close(self):
+        self.game.model.visualizer.close()
